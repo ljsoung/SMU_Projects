@@ -82,10 +82,65 @@ public class LoginFrame extends JFrame {
         setVisible(true);
     }
 }
-class Login implements ActionListener {
+class Login extends LoginFrame implements ActionListener {
+
+    private String sql;
+
+    // db연결용
+    DatabaseConnectionManager db = new DatabaseConnectionManager();
+    Connection con = null;
+    PreparedStatement stmt = null;
+
+    Login(){
+        super();
+        addActionListeners();
+    }
+
+    public void addActionListeners(){
+        loginButton.addActionListener(this);
+        signUpButton.addActionListener(this);
+
+    }
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        JButton pressButton = (JButton)e.getSource(); // 버튼의 소스를 가져옴
+        String buttonText = pressButton.getText(); // 버튼의 텍스트를 가져옴
 
+        if(buttonText.equals("로그인")){
+
+            //id와 password 저장할 변수
+            String id = idTextField.getText();
+            char[] passwordChars = passwordField.getPassword();
+            String password = new String(passwordChars);
+            boolean isLoggedIn = false;
+
+            db.getConnection(con);
+            try {
+                //SQL 쿼리 준비 및 실행
+                sql = "SELECT * FROM user WHERE id = ? AND password = ?";
+                stmt = con.prepareStatement(sql);
+                stmt.setString(1, id);
+                stmt.setString(2, password);
+
+                //로그인 성공 여부 확인
+                ResultSet rs = stmt.executeQuery();
+                if (rs.next()) {
+                    isLoggedIn = true;
+                }
+
+                if(isLoggedIn){ // 성공 시
+                    JOptionPane.showMessageDialog(null, "로그인 성공!", "알림", JOptionPane.INFORMATION_MESSAGE);
+
+                }
+                else{ // 실패 시
+                    JOptionPane.showMessageDialog(null, "ID 또는 비밀번호가 틀렸습니다.", "로그인 실패", JOptionPane.ERROR_MESSAGE);
+                    idTextField = null;
+                    passwordField = null;
+                }
+            } catch (SQLException ex) {
+                System.out.println("SQL 오류");
+            }
+        }
     }
 }
