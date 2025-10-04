@@ -11,7 +11,7 @@ public class WeatherApiCaller {
     private static final String BASE_URL_ULTRA_SRT_NCST = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtNcst"; // 초단기실황조회
     private static final String BASE_URL_ULTRA_SRT_FCST = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst"; // 초단기예보조회
     private static final String BASE_URL_VILAGE_FCST = "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst"; // 단기예보조회
-    private static final String SERVICE_KEY = "XWSEZYN%2FQRqEf3AGk%2BnvpkvK2%2F2ZzBySHO4JS82gqzemsxnKwT4oIXFCCku64FcT3F%2BTPFXtQrqVHg5YMKXKaw%3D%3D";
+    private static final String SERVICE_KEY = "serviceKey";
 
     // URL 기본 파라미터
     private static final String PAGE_NO = "1";
@@ -93,4 +93,5 @@ public class WeatherApiCaller {
             if (conn != null) conn.disconnect();
         }
     }
+
 }
